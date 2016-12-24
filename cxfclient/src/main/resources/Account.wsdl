@@ -1,0 +1,72 @@
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://template.com/"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http"
+	name="BankAccountService" targetNamespace="http://template.com/">
+	<wsdl:types>
+		<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+			xmlns:tns="http://template.com/" elementFormDefault="unqualified"
+			targetNamespace="http://template.com/" version="1.0">
+			<xs:element name="newApplication" type="tns:newApplication" />
+			<xs:element name="newApplicationResponse" type="tns:newApplicationResponse" />
+			<xs:complexType name="newApplication">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="arg0"
+						type="tns:creditCardApplication" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="creditCardApplication">
+				<xs:sequence>
+					<xs:element name="name" type="xs:string" />
+					<xs:element name="lastname" type="xs:string" />
+					<xs:element name="age" type="xs:int" />
+					<xs:element name="country" type="xs:string" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="newApplicationResponse">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="return"
+						type="tns:creditCardInformation" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="creditCardInformation">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="holderName" type="xs:string" />
+					<xs:element minOccurs="0" name="holderLast" type="xs:string" />
+					<xs:element minOccurs="0" name="cardNum" type="xs:long" />
+					<xs:element name="secCode" type="xs:int" />
+					<xs:element minOccurs="0" name="issue" type="xs:string" />
+				</xs:sequence>
+			</xs:complexType>
+		</xs:schema>
+	</wsdl:types>
+	<wsdl:message name="newApplicationResponse">
+		<wsdl:part element="tns:newApplicationResponse" name="parameters"></wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="newApplication">
+		<wsdl:part element="tns:newApplication" name="parameters"></wsdl:part>
+	</wsdl:message>
+	<wsdl:portType name="BankAccount">
+		<wsdl:operation name="newApplication">
+			<wsdl:input message="tns:newApplication" name="newApplication"></wsdl:input>
+			<wsdl:output message="tns:newApplicationResponse" name="newApplicationResponse"></wsdl:output>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="BankAccountServiceSoapBinding" type="tns:BankAccount">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="newApplication">
+			<soap:operation soapAction="" style="document" />
+			<wsdl:input name="newApplication">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="newApplicationResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="BankAccountService">
+		<wsdl:port binding="tns:BankAccountServiceSoapBinding" name="BankAccountPort">
+			<soap:address location="http://localhost:8080/cxfwebs/services/account" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>
